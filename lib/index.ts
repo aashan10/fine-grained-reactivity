@@ -40,13 +40,44 @@ function initialize() {
         running.dependencies.add(subscriptions);
     }
 
+    // Currently running subscriber is removed from the dependencies of all subscribers.
+    // Also, all subscribers are removed from the dependencies of the currently running subscriber.
+    function cleanup<T>(running: Subscriber<T>) {
+        for (const dep of running.dependencies) {
+            dep.delete(running);
+        }
+        running.dependencies.clear();
+    }
+    
+    // An effect is a function that is executed when a signal changes.
+    function createEffect<T>(callback: () => T): T {
+        const execute = () => {
+            cleanup(running);
+            context.push(running);
+            try {
+                return callback();
+            } finally {
+                context.pop();
+            }
+        }
+    
+        const running: Subscriber<T> = {
+            dependencies: new Set(),
+            execute
+        }
+    
+        return execute();
+    }
+
 
     return {
-        createSignal
+        createSignal,
+        createEffect
+
     }
 
 }
 
-const {createSignal} = initialize();
+const {createSignal, createEffect} = initialize();
 
-export { createSignal};
+export { createSignal, createEffect};
