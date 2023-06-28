@@ -69,15 +69,22 @@ function initialize() {
         return execute();
     }
 
+    // A memo is a signal that is only updated when its dependencies change.
+    function createMemo<T>(fn: () => T) {
+        const [get, set] = createSignal<T>(fn());
+        createEffect(() => set(fn()));
+        return get;
+    }
+
 
     return {
         createSignal,
-        createEffect
-
+        createEffect,
+        createMemo
     }
 
 }
 
-const {createSignal, createEffect} = initialize();
+const {createSignal, createEffect, createMemo} = initialize();
 
-export { createSignal, createEffect};
+export { createSignal, createEffect, createMemo};

@@ -1,4 +1,4 @@
-import {createSignal, createEffect} from '../lib';
+import {createSignal, createEffect, createMemo} from '../lib';
 
 
 const [firstName, setFirstName] = createSignal("John");
@@ -38,6 +38,10 @@ const fullNameDisplay = document.createElement("h2");
 document.body.appendChild(fullNameDisplay);
 
 
+const displayName = createMemo(() => {
+    return showFullName() ? fullName() : firstName();
+});
+
 createEffect(() => {
-    fullNameDisplay.innerText = fullName();
+    fullNameDisplay.innerText = displayName();
 });
