@@ -1,4 +1,4 @@
-import {createSignal} from '../lib';
+import {createSignal, createEffect} from '../lib';
 
 
 const [firstName, setFirstName] = createSignal("John");
@@ -38,4 +38,6 @@ const fullNameDisplay = document.createElement("h2");
 document.body.appendChild(fullNameDisplay);
 
 
-
+createEffect(() => {
+    fullNameDisplay.innerText = fullName();
+});
