@@ -37,4 +37,5 @@ $: {
 Ever wondered how it works under the hood?
 Well, reactivity is your answer. And you'll find the basics of reactivity in this repository.
 
+Check out my blog (https://aashan.dev/blogs/fine-grained-reactivity)[https://aashan.dev/blogs/fine-grained-reactivity] to learn more about the implementation
 
